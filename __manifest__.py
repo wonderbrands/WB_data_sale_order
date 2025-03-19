@@ -20,7 +20,7 @@
     # Check https://github.com/odoo/odoo/blob/14.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Inventory',
-    'version': '15.0',
+    'version': '18.0',
 
     # any module necessary for this one to work correctly
     'depends': ['base',
@@ -34,11 +34,6 @@
     'data': [
         #'security/ir.model.access.csv',
         'views/sale_order_views.xml',
-        'views/views.xml',
-        'views/templates.xml',
     ],
-    # only loaded in demonstration mode
-    'demo': [
-        'demo/demo.xml',
-    ],
+ 
 }
