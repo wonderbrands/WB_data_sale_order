@@ -1,0 +1,73 @@
+<odoo>
+    <data>
+        <!-- list View Definition -->
+        <record id="view_carriers_list_list" model="ir.ui.view">
+            <field name="name">carriers.list.list</field>
+            <field name="model">carriers.list</field>
+            <field name="arch" type="xml">
+                <list string="Carriers List">
+                    <field name="full_name"/>
+                    <field name="name"/>
+                    <field name="code"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Form View Definition -->
+        <record id="view_carriers_list_form" model="ir.ui.view">
+            <field name="name">carriers.list.form</field>
+            <field name="model">carriers.list</field>
+            <field name="arch" type="xml">
+                <form string="Carrier">
+                    <sheet>
+                        <group>
+                            <h1>
+                                <field name="full_name" readonly="1"/>
+                            </h1>
+                            <field name="name"/>
+                            <field name="code"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Action to Open the list and Form View -->
+        <record id="action_carriers_list" model="ir.actions.act_window">
+            <field name="name">Carriers</field>
+            <field name="res_model">carriers.list</field>
+            <field name="view_mode">list,form</field>
+            <field name="view_id" ref="view_carriers_list_list"/>
+        </record>
+
+        <!-- Menu Item for the Carriers List -->
+        <menuitem id="menu_carriers_list" 
+                  name="Carriers" 
+                  parent="sale.sale_menu_root" 
+                  action="action_carriers_list" 
+                  sequence="25" />
+
+        <!-- Define the Security Group -->
+        <record id="group_carrier_editor" model="res.groups">
+            <field name="name">Carrier Editor</field>
+            <field name="category_id" ref="base.module_category_hidden"/>
+        </record>
+
+        <!-- Insert in sale order view-->
+        <record id="view_order_form_inherit_carrier" model="ir.ui.view">
+            <field name="name">sale.order.form.inherit.carrier</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <!-- Locate the 'tag_ids' field in the 'Other Information' page and add 'carrier_selection_relational' after it -->
+
+                <xpath expr="//field[@name='client_order_ref']" position="after">
+                    <field name="data_carrier_selection_relational" 
+                    string="Paquetería o Carrier"
+                    options="{'no_create': True, 'no_open': True}"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

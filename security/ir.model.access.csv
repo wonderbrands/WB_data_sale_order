@@ -1,2 +1,3 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_cancelar_venta_wizard,cancelar_venta_wizard.cancelar_venta_wizard,model_cancelar_venta_wizard,base.group_user,1,1,1,1
+access_carriers_list_read,carriers.list read access,model_carriers_list,base.group_user,1,0,0,0
+access_carriers_list_editor,carriers.list editor access,model_carriers_list,group_carrier_editor,1,1,1,1

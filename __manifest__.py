@@ -32,8 +32,10 @@
 
     # always loaded
     'data': [
-        #'security/ir.model.access.csv',
+        'security/security_group.xml',
+        'security/ir.model.access.csv', # A pesar de tenerlo completo, lo comentamos.
         'views/sale_order_views.xml',
+        'views/carriers_view.xml',
     ],
  
 }
