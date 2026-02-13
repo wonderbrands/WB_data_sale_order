@@ -10,28 +10,30 @@ import requests
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
-    data_total_carrier_tracking = fields.Integer(
-        string="Total de guias"
-    )
-    availability = fields.Boolean(string='Disponibilidad', help='Venta negada o cancelada por disponibilidad')
-    delivery_time = fields.Boolean(string='Tiempo de entrega', help='Venta negada o cancelada por tiempo de entrega')
-    sale_price = fields.Boolean(string='Precio de venta', help='Venta negada o cancelada por precio de venta')
-    other = fields.Boolean(string='Otra', help='Venta negada o cancelada por una razón que no se encuentra en el listado')
-    message = fields.Text(string='¿Cuál es el motivo?', help='Anote la razón por la cual se negó o canceló la venta', tracking=True) # track_visibility=True  No funiona ya
-    time_zone = fields.Datetime(string='Zona horaria', help='Prueba de la zona horaria')
+    # Comentar si modulo wms_integrator se queda
+    data_total_carrier_tracking = fields.Integer(string="Total de guias")
+    
+    
+    data_availability = fields.Boolean(string='Disponibilidad', help='Venta negada o cancelada por disponibilidad')
+    data_delivery_time = fields.Boolean(string='Tiempo de entrega', help='Venta negada o cancelada por tiempo de entrega')
+    data_sale_price = fields.Boolean(string='Precio de venta', help='Venta negada o cancelada por precio de venta')
+    data_other = fields.Boolean(string='Otra', help='Venta negada o cancelada por una razón que no se encuentra en el listado')
+    data_message = fields.Text(string='¿Cuál es el motivo?', help='Anote la razón por la cual se negó o canceló la venta', tracking=True) # track_visibility=True  No funiona ya
+    data_time_zone = fields.Datetime(string='Zona horaria', help='Prueba de la zona horaria')
 
-    auto_invoiced = fields.Boolean(string='Fue autofacturado',help='Muestra si la SO activa fue facturada de manera automática')
+    data_auto_invoiced = fields.Boolean(string='Fue autofacturado',help='Muestra si la SO activa fue facturada de manera automática')
     
     
 
-    @api.onchange('other')
+    @api.onchange('data_other')
     def _clear_field(self):
 
-        if not self.other:
-            self.message = False
+        if not self.data_other:
+            self.data_message = False
             
             
-# Se aniade modelo de carriers desde modulo WMS (deprecado para Odoo 18.0)
+# Comentar si modulo wms_integrator se queda
+
 class CarrierSelector(models.Model):
     _name = "carriers.list"
 
@@ -61,7 +63,7 @@ class CarriersFields(models.Model):
     _inherit = 'sale.order'
     _description = 'Carrier fields'
 
-    data_carrier_selection_relational = fields.Many2one(
+    carrier_selection_relational = fields.Many2one(
         name = "Select carrier",
         comodel_name = "carriers.list",
         options={

@@ -32,10 +32,10 @@
 
     # always loaded
     'data': [
-        'security/security_group.xml',
-        'security/ir.model.access.csv', # A pesar de tenerlo completo, lo comentamos.
+        'security/security_group.xml',  # Comentar si modulo wms_integrator se queda
+        'security/ir.model.access.csv', # Comentar si modulo wms_integrator se queda
         'views/sale_order_views.xml',
-        'views/carriers_view.xml',
+        'views/carriers_view.xml', # Comentar si modulo wms_integrator se queda
     ],
  
 }

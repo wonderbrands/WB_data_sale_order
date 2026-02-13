@@ -62,7 +62,7 @@
                 <!-- Locate the 'tag_ids' field in the 'Other Information' page and add 'carrier_selection_relational' after it -->
 
                 <xpath expr="//field[@name='client_order_ref']" position="after">
-                    <field name="data_carrier_selection_relational" 
+                    <field name="carrier_selection_relational" 
                     string="Paquetería o Carrier"
                     options="{'no_create': True, 'no_open': True}"/>
                 </xpath>
