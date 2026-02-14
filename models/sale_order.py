@@ -66,8 +66,5 @@ class CarriersFields(models.Model):
     carrier_selection_relational = fields.Many2one(
         name = "Select carrier",
         comodel_name = "carriers.list",
-        options={
-            'no_create': True
-        }
     )
 
