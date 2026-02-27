@@ -5,14 +5,8 @@
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//group[@name='order_details']" position="after">
-                    <group>
-                        <field name="data_auto_invoiced"/>
-                    </group>
-                </xpath>
-
+                
                 <xpath expr="//notebook" position="inside">
-                    
                     <page name="denied" string="Motivos de cancelación" invisible="state != 'cancel'">
                         <group>
                             <group string="Motivos de cancelación de venta">
@@ -24,8 +18,20 @@
                             </group>
                         </group>
                     </page>
-
                 </xpath>
+
+                <!-- <xpath expr="//page[@name='other_information']//group[@name='sale_shipping']" position="inside">
+                    <field name="data_ready_to_pick" widget="boolean_toggle" readonly="1"/>
+                </xpath> -->
+
+                <xpath expr="//div[hasclass('oe_title')]" position="before">
+                    <div class="badge rounded-pill text-bg-success float-end fs-6 border-0 mt-2" 
+                        style="clear: right;"
+                        invisible="not data_ready_to_pick">
+                        <span>Listo para recolectar</span>
+                    </div>
+                </xpath>
+
             </field>
         </record>
 
@@ -34,9 +40,9 @@
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="madkting.view_order_form_inherit"/> 
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='yuju_carrier_tracking_ref']" position="after">
-                    <field name="data_total_carrier_tracking"/>
-                </xpath>
+                <xpath expr="//field[@name='yuju_carrier_tracking_ref']" position="attributes">
+                    <attribute name="readonly">0</attribute>
+                </xpath>          
             </field>
         </record>
     </data>
