@@ -1,3 +1,5 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_carriers_list_read,carriers.list read access,model_carriers_list,base.group_user,1,0,0,0
 access_carriers_list_editor,carriers.list editor access,model_carriers_list,group_carrier_editor,1,1,1,1
+access_sale_order_attachment,access.sale.order.attachment,model_sale_order_attachment,group_guideline_attacher,1,1,1,1
+access_sale_order_attachment_read,access.sale.order.attachment.read,model_sale_order_attachment,base.group_user,1,0,0,0

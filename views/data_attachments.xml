@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="wb_data_sale_order_guias_inherit" model="ir.ui.view">
+            <field name="name">wb.data.sale.order.guias.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook" position="inside">
+                    <page string="Guías" name="attachments">
+                        <field name="attachments">
+                            <list create="True" edit="True" editable="bottom">
+                                <field name="display_name_custom"/>
+                                <field name="on_bin" readonly="True"/>
+                                <field name="on_dock" readonly="True"/>
+                                <field name="dispatched" readonly="True"/>
+                                <field name="attachment" filename="file_name" widget="binary"/>
+                                <field name="file_name" invisible="True" column_invisible="True"/>
+                            </list>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

@@ -36,6 +36,7 @@
         'security/ir.model.access.csv', # Comentar si modulo wms_integrator se queda
         'views/sale_order_views.xml',
         'views/carriers_view.xml', # Comentar si modulo wms_integrator se queda
+        'views/data_attachments.xml',
     ],
  
 }
