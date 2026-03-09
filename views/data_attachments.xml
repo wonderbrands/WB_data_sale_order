@@ -2,6 +2,52 @@
 <odoo>
     <data>
 
+        <record id="view_sale_order_attachment_list" model="ir.ui.view">
+            <field name="name">sale.order.attachment.list</field>
+            <field name="model">sale.order.attachment</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="display_name_custom"/>
+                    <field name="file_name"/>
+                    <field name="on_bin" readonly="True"/>
+                    <field name="on_dock" readonly="True"/>
+                    <field name="dispatched" readonly="True"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_sale_order_attachment_form" model="ir.ui.view">
+            <field name="name">sale.order.attachment.form</field>
+            <field name="model">sale.order.attachment</field>
+            <field name="arch" type="xml">
+                <form string="Adjuntar Guía">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="attachment" filename="file_name" widget="binary" string="Subir Documento"/>
+                                <field name="file_name" invisible="True"/>
+                                <field name="display_name_custom" invisible="True"/>
+                            </group>
+                            <group>
+                                <field name="on_bin" readonly="True"/>
+                                <field name="on_dock" readonly="True"/>
+                                <field name="dispatched" readonly="True"/>
+                            </group>
+                        </group>
+                        
+                        <div invisible="not attachment" class="alert alert-info" role="alert" style="margin-bottom: 15px; margin-top: 10px;">
+                            <i class="fa fa-info-circle" style="margin-right: 5px;"/>
+                            <strong>Aviso:</strong> La previsualización del documento estará disponible una vez que guarde la <b>Orden de Venta</b> principal.
+                        </div>
+
+                        <group invisible="not attachment">
+                             <field name="attachment" widget="pdf_viewer" nolabel="1" colspan="2"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
         <record id="wb_data_sale_order_guias_inherit" model="ir.ui.view">
             <field name="name">wb.data.sale.order.guias.inherit</field>
             <field name="model">sale.order</field>
@@ -9,16 +55,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//notebook" position="inside">
                     <page string="Guías" name="attachments">
-                        <field name="attachments">
-                            <list create="True" edit="True" editable="bottom">
-                                <field name="display_name_custom"/>
-                                <field name="on_bin" readonly="True"/>
-                                <field name="on_dock" readonly="True"/>
-                                <field name="dispatched" readonly="True"/>
-                                <field name="attachment" filename="file_name" widget="binary"/>
-                                <field name="file_name" invisible="True" column_invisible="True"/>
-                            </list>
-                        </field>
+                        <field name="attachments"/>
                     </page>
                 </xpath>
             </field>

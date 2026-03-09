@@ -11,8 +11,8 @@ class SOAttachment(models.Model):
     so_id = fields.Many2one("sale.order", string="Orden de Venta", ondelete='cascade')
     sequence_number = fields.Integer(string="Secuencia", readonly=True)
     display_name_custom = fields.Char(string="Referencia de Guía", compute="_compute_display_name_custom", store=True)
-    
 
+    # --- CAMPOS DE ESTADO ---
     on_bin = fields.Boolean(string="En bin", default=False)
     bin_id = fields.Many2one("bin.storage", string="BIN Actual", tracking=True)
     on_dock = fields.Boolean(string="Está en DOCK", default=False, tracking=True)
@@ -29,24 +29,31 @@ class SOAttachment(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
+        #Diccionario para llevar el conteo en memoria por cada Orden de Venta
+        so_counters = {}
         for vals in vals_list:
-            if vals.get('so_id'):
-                #Calcula la secuencia sumando 1 al total de guías existentes
-                existing_count = self.search_count([('so_id', '=', vals['so_id'])])
-                vals['sequence_number'] = existing_count + 1
+            so_id = vals.get('so_id')
+            if so_id:
+                if so_id not in so_counters:
+                    existing_count = self.search_count([('so_id', '=', so_id)])
+                    so_counters[so_id] = existing_count
+                
+                so_counters[so_id] += 1
+                vals['sequence_number'] = so_counters[so_id]
+                
         return super(SOAttachment, self).create(vals_list)
 
     def unlink(self):
-        #Guardamos los IDs de las SO afectadas antes de borrar
+        # Guardamos los IDs de las SO afectadas antes de borrar
         affected_so_ids = set()
         for record in self:
             if record.so_id:
                 affected_so_ids.add(record.so_id.id)
 
-        #Realizamos el borrado real de la base de datos
+        # Realizamos el borrado real
         res = super(SOAttachment, self).unlink()
 
-        #Re-secuenciamos los anexos restantes
+        # Re-secuenciamos los anexos restantes
         for so_id in affected_so_ids:
             remaining_attachments = self.search([
                 ('so_id', '=', so_id)
@@ -62,5 +69,5 @@ class SOAttachment(models.Model):
 class SaleOrderInherit(models.Model):
     _inherit = 'sale.order'
 
-    #Solo inyectamos la relación One2many hacia el nuevo modelo
+    # Inyectamos la relación One2many hacia el nuevo modelo
     attachments = fields.One2many("sale.order.attachment", "so_id", string="Guías Adjuntas")
