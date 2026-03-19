@@ -27,7 +27,6 @@
                 'product',
                 'sale',
                 'stock',
-                'madkting'
                 ],
 
     # always loaded
