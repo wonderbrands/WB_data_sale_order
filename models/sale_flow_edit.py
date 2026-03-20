@@ -69,5 +69,30 @@ class SOAttachment(models.Model):
 class SaleOrderInherit(models.Model):
     _inherit = 'sale.order'
 
-    # Inyectamos la relación One2many hacia el nuevo modelo
     attachments = fields.One2many("sale.order.attachment", "so_id", string="Guías Adjuntas")
+
+    ei_total = fields.Integer(
+        string="Total Etiquetas EI",
+        compute="_compute_ei_total",
+        store=False,  # No lo almacenamos, siempre refleja el PICK en tiempo real
+    )
+
+    def _compute_ei_total(self):
+        for order in self:
+            picking = self.env['stock.picking'].search([
+                ('sale_id', '=', order.id),
+                ('name', 'ilike', 'PICK')
+            ], limit=1)
+
+            if not picking:
+                picking = self.env['stock.picking'].search([
+                    ('sale_id', '=', order.id)
+                ], limit=1)
+
+            total = 0
+            if picking:
+                for move in picking.move_ids:
+                    qty = move.quantity if move.quantity > 0 else move.product_uom_qty
+                    total += int(qty)
+
+            order.ei_total = total
