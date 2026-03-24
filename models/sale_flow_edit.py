@@ -99,6 +99,12 @@ class SaleOrderInherit(models.Model):
         string="Paquetería o Carrier",
         readonly=True
     )
+    
+    data_tracking_readwrite = fields.Char(
+        related='yuju_carrier_tracking_ref',
+        string="Número de guía",
+        readonly=False
+    )
 
     def _compute_ei_total(self):
         for order in self:
