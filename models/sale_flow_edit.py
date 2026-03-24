@@ -77,7 +77,7 @@ class SOAttachment(models.Model):
         return res
     """
 
-class SOInternalTag(model.Model):
+class SOInternalTag(models.Model):
     _name = "sale.order.ei"
     _description = "Etiqueta Interna"
 
