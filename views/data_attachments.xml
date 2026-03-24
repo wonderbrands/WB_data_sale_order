@@ -7,11 +7,9 @@
             <field name="model">sale.order.attachment</field>
             <field name="arch" type="xml">
                 <list>
-                    <field name="display_name_custom"/>
                     <field name="file_name"/>
-                    <field name="on_bin" readonly="True"/>
-                    <field name="on_dock" readonly="True"/>
-                    <field name="dispatched" readonly="True"/>
+                    <field name="guide_number" widget="many2many_tags"/>
+                    <field name="carrier" />
                 </list>
             </field>
         </record>
@@ -29,9 +27,8 @@
                                 <field name="display_name_custom" invisible="True"/>
                             </group>
                             <group>
-                                <field name="on_bin" readonly="True"/>
-                                <field name="on_dock" readonly="True"/>
-                                <field name="dispatched" readonly="True"/>
+                                <field name="guide_number" widget="many2many_tags"/>
+                                <field name="carrier" />
                             </group>
                         </group>
                         
@@ -54,8 +51,20 @@
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//notebook" position="inside">
-                    <page string="Guías" name="attachments">
+                    <page string="Información necesaria" name="attachments">
                         <field name="attachments"/>
+                    </page>
+                </xpath>
+                <xpath expr="//notebook" position="inside">
+                    <page string="Etiquetas internas" name="attachments">
+                        <field name="ei">
+                             <list>
+                                <field name="display_name_custom"/>
+                                <field name="on_bin"/>
+                                <field name="on_dock" />
+                                <field name="dispatched" />
+                            </list>
+                        </field>
                     </page>
                 </xpath>
             </field>

@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 from odoo import models, fields, api
 
+class AttachmentGuide(models.Model):
+    _name = "guide.name"
+    name = fields.Char(string="Guía")
+
 class SOAttachment(models.Model):
     _name = "sale.order.attachment"
     _description = "Anexos de Orden de Venta"
@@ -9,16 +13,23 @@ class SOAttachment(models.Model):
     attachment = fields.Binary(string="Archivo", required=True)
     file_name = fields.Char(string="Nombre del Archivo")
     so_id = fields.Many2one("sale.order", string="Orden de Venta", ondelete='cascade')
-    sequence_number = fields.Integer(string="Secuencia", readonly=True)
-    display_name_custom = fields.Char(string="Referencia de Guía", compute="_compute_display_name_custom", store=True)
+    guide_number = fields.Many2many(comodel_name="guide.name")
+    carrier = fields.Many2one(
+        comodel_name="carriers.list",
+        string="Select carrier" 
+    )
+    #sequence_number = fields.Integer(string="Secuencia", readonly=True)
+    #display_name_custom = fields.Char(string="Referencia de Guía", compute="_compute_display_name_custom", store=True)
+    
 
     # --- CAMPOS DE ESTADO ---
-    on_bin = fields.Boolean(string="En bin", default=False)
-    bin_id = fields.Many2one("bin.storage", string="BIN Actual", tracking=True)
-    on_dock = fields.Boolean(string="Está en DOCK", default=False, tracking=True)
-    dock_id = fields.Many2one("dock.storage", string="DOCK Actual", tracking=True)
-    dispatched = fields.Boolean(string="Entregado a paquetería", default=False)
+    #on_bin = fields.Boolean(string="En bin", default=False)
+    #bin_id = fields.Many2one("bin.storage", string="BIN Actual", tracking=True)
+    #on_dock = fields.Boolean(string="Está en DOCK", default=False, tracking=True)
+    #dock_id = fields.Many2one("dock.storage", string="DOCK Actual", tracking=True)
+    #dispatched = fields.Boolean(string="Entregado a paquetería", default=False)
 
+    """
     @api.depends('so_id', 'sequence_number')
     def _compute_display_name_custom(self):
         for record in self:
@@ -64,12 +75,28 @@ class SOAttachment(models.Model):
                     attach.write({'sequence_number': index})
                 
         return res
+    """
+
+class SOInternalTag(model.Model):
+    _name = "sale.order.ei"
+    _description = "Etiqueta Interna"
+
+    so_id = fields.Many2one("sale.order", string="Orden de Venta", ondelete='cascade')
+    sequence_number = fields.Integer(string="Secuencia", readonly=True)
+    display_name_custom = fields.Char(string="Referencia de Guía", compute="_compute_display_name_custom", store=True)
+    on_bin = fields.Boolean(string="En bin", default=False)
+    bin_id = fields.Many2one("bin.storage", string="BIN Actual", tracking=True)
+    on_dock = fields.Boolean(string="Está en DOCK", default=False, tracking=True)
+    dock_id = fields.Many2one("dock.storage", string="DOCK Actual", tracking=True)
+    dispatched = fields.Boolean(string="Entregado a paquetería", default=False)
+   
 
 
 class SaleOrderInherit(models.Model):
     _inherit = 'sale.order'
 
     attachments = fields.One2many("sale.order.attachment", "so_id", string="Guías Adjuntas")
+    ei = fields.One2many("sale.order.ei", "so_id", string="Etiquetas internas")
 
     ei_total = fields.Integer(
         string="Total Etiquetas EI",
