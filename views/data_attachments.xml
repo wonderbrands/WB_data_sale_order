@@ -24,7 +24,6 @@
                             <group>
                                 <field name="attachment" filename="file_name" widget="binary" string="Subir Documento"/>
                                 <field name="file_name" invisible="True"/>
-                                <field name="display_name_custom" invisible="True"/>
                             </group>
                             <group>
                                 <field name="guide_number" widget="many2many_tags"/>
