@@ -53,21 +53,5 @@
             <field name="category_id" ref="base.module_category_hidden"/>
         </record>
 
-        <!-- Insert in sale order view-->
-        <record id="view_order_form_inherit_carrier" model="ir.ui.view">
-            <field name="name">sale.order.form.inherit.carrier</field>
-            <field name="model">sale.order</field>
-            <field name="inherit_id" ref="sale.view_order_form"/>
-            <field name="arch" type="xml">
-                <!-- Locate the 'tag_ids' field in the 'Other Information' page and add 'data_carrier_selection_relational' after it -->
-
-                <xpath expr="//field[@name='client_order_ref']" position="after">
-                    <field name="data_carrier_selection_relational" 
-                    string="Paquetería o Carrier"
-                    options="{'no_create': True, 'no_open': True}"/>
-                </xpath>
-            </field>
-        </record>
-
     </data>
 </odoo>

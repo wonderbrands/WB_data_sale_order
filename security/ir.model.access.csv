@@ -4,4 +4,3 @@ access_carriers_list_editor,carriers.list editor access,model_carriers_list,grou
 access_sale_order_attachment,access.sale.order.attachment,model_sale_order_attachment,group_guideline_attacher,1,1,1,1
 access_sale_order_attachment_read,access.sale.order.attachment.read,model_sale_order_attachment,base.group_user,1,0,0,0
 access_sale_order_ei_user,sale.order.ei.user,model_sale_order_ei,base.group_user,1,0,0,0
-access_guide_name_public,guide.name.public,WB_data_sale_order.model_guide_name,base.group_user,1,1,1,1

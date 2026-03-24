@@ -82,7 +82,6 @@ class SOInternalTag(models.Model):
     dispatched = fields.Boolean(string="Entregado a paquetería", default=False)
    
 
-
 class SaleOrderInherit(models.Model):
     _inherit = 'sale.order'
 
@@ -93,6 +92,12 @@ class SaleOrderInherit(models.Model):
         string="Total Etiquetas EI",
         compute="_compute_ei_total",
         store=False,  # No lo almacenamos, siempre refleja el PICK en tiempo real
+    )
+    
+    data_carrier_readonly = fields.Many2one(
+        related='data_carrier_selection_relational',
+        string="Paquetería o Carrier",
+        readonly=True
     )
 
     def _compute_ei_total(self):
@@ -114,3 +119,61 @@ class SaleOrderInherit(models.Model):
                     total += int(qty)
 
             order.ei_total = total
+
+    def write(self, vals):
+        #Verificar si los campos que nos interesan vienen en el diccionario de actualización
+        check_carrier = 'data_carrier_selection_relational' in vals
+        check_tracking = 'yuju_carrier_tracking_ref' in vals
+
+        #Guardar el estado actual ANTES de actualizar la BD
+        old_values = {}
+        if check_carrier or check_tracking:
+            for record in self:
+                old_values[record.id] = {
+                    'carrier_id': record.data_carrier_selection_relational.id,
+                    'tracking': record.yuju_carrier_tracking_ref
+                }
+
+        #Llamar al super()
+        res = super(SaleOrderInherit, self).write(vals)
+
+        #Comparar el estado anterior con el nuevo para ver si realmente cambió y registrarlo
+        if check_carrier or check_tracking:
+            for record in self:
+                old_data = old_values.get(record.id)
+                if not old_data:
+                    continue
+                
+                #Revisar si cambió el carrier
+                if check_carrier:
+                    new_carrier_id = record.data_carrier_selection_relational.id
+                    if old_data['carrier_id'] != new_carrier_id:
+                        if new_carrier_id:
+                            msg = f"Se ha modificado el carrier a: {record.data_carrier_selection_relational.name}"
+                        else:
+                            msg = "Se ha eliminado el carrier de la orden"
+                            
+                        self.env['wmds.log'].sudo().create({
+                            'sale': record.id,
+                            'log': msg,
+                            'user': self.env.user.id,
+                            'date': fields.Datetime.now(),
+                        })
+
+                #Revisar si cambió el número de guía
+                if check_tracking:
+                    new_tracking = record.yuju_carrier_tracking_ref
+                    if old_data['tracking'] != new_tracking:
+                        if new_tracking:
+                            msg = f"Se ha actualizado el número de guía a: {new_tracking}"
+                        else:
+                            msg = "Se ha eliminado el número de guía de la orden"
+                            
+                        self.env['wmds.log'].sudo().create({
+                            'sale': record.id,
+                            'log': msg,
+                            'user': self.env.user.id,
+                            'date': fields.Datetime.now(),
+                        })
+
+        return res

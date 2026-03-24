@@ -52,10 +52,7 @@
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='client_order_ref']" position="after">
-                    <field name="data_carrier_selection_relational" 
-                    string="Paquetería o Carrier"
-                    readonly="1" 
-                    options="{'no_create': True, 'no_open': True}"/>
+                    <field name="data_carrier_readonly" options="{'no_create': True, 'no_open': True}"/>
                 </xpath>
             </field>
         </record>
