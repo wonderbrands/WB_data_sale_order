@@ -8,7 +8,6 @@ class AttachmentGuide(models.Model):
 class SOAttachment(models.Model):
     _name = "sale.order.attachment"
     _description = "Anexos de Orden de Venta"
-    _order = "sequence_number asc" 
 
     attachment = fields.Binary(string="Archivo", required=True)
     file_name = fields.Char(string="Nombre del Archivo")
