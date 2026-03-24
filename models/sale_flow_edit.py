@@ -1,10 +1,6 @@
 # -*- coding: utf-8 -*-
 from odoo import models, fields, api
 
-class AttachmentGuide(models.Model):
-    _name = "guide.name"
-    name = fields.Char(string="Guía")
-
 class SOAttachment(models.Model):
     _name = "sale.order.attachment"
     _description = "Anexos de Orden de Venta"
@@ -12,11 +8,7 @@ class SOAttachment(models.Model):
     attachment = fields.Binary(string="Archivo", required=True)
     file_name = fields.Char(string="Nombre del Archivo")
     so_id = fields.Many2one("sale.order", string="Orden de Venta", ondelete='cascade')
-    guide_number = fields.Many2many(comodel_name="guide.name")
-    carrier = fields.Many2one(
-        comodel_name="carriers.list",
-        string="Select carrier" 
-    )
+
     #sequence_number = fields.Integer(string="Secuencia", readonly=True)
     #display_name_custom = fields.Char(string="Referencia de Guía", compute="_compute_display_name_custom", store=True)
     

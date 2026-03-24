@@ -8,9 +8,7 @@
             <field name="arch" type="xml">
                 <list>
                     <field name="file_name"/>
-                    <field name="guide_number" widget="many2many_tags"/>
-                    <field name="carrier" />
-                </list>
+                    </list>
             </field>
         </record>
 
@@ -24,10 +22,6 @@
                             <group>
                                 <field name="attachment" filename="file_name" widget="binary" string="Subir Documento"/>
                                 <field name="file_name" invisible="True"/>
-                            </group>
-                            <group>
-                                <field name="guide_number" widget="many2many_tags"/>
-                                <field name="carrier" />
                             </group>
                         </group>
                         
@@ -50,13 +44,20 @@
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//notebook" position="inside">
-                    <page string="Información necesaria" name="attachments">
+                    <page string="Información de envío" name="attachments">
+                        <group>
+                            <group>
+                                <field name="yuju_carrier_tracking_ref" readonly="0" string="Número de Guía"/>
+                                <field name="data_carrier_selection_relational" readonly="0" string="Paquetería o Carrier" options="{'no_create': True, 'no_open': True}"/>
+                            </group>
+                        </group>
+                        
                         <field name="attachments"/>
                     </page>
                 </xpath>
+                
                 <xpath expr="//notebook" position="inside">
-                    <page string="Etiquetas internas" name="attachments">
-                        <field name="ei">
+                    <page string="Etiquetas internas" name="ei_tags"> <field name="ei">
                              <list>
                                 <field name="display_name_custom"/>
                                 <field name="on_bin"/>

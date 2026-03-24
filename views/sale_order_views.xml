@@ -41,8 +41,22 @@
             <field name="inherit_id" ref="madkting.view_order_form_inherit"/> 
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='yuju_carrier_tracking_ref']" position="attributes">
-                    <attribute name="readonly">0</attribute>
+                    <attribute name="readonly">1</attribute>
                 </xpath>          
+            </field>
+        </record>
+
+        <record id="view_order_form_inherit_carrier" model="ir.ui.view">
+            <field name="name">sale.order.form.inherit.carrier</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='client_order_ref']" position="after">
+                    <field name="data_carrier_selection_relational" 
+                    string="Paquetería o Carrier"
+                    readonly="1" 
+                    options="{'no_create': True, 'no_open': True}"/>
+                </xpath>
             </field>
         </record>
     </data>
