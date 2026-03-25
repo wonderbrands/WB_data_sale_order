@@ -44,7 +44,7 @@
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//notebook" position="inside">
-                    <page string="Información adicional" name="attachments">
+                    <page string="Datos necesarios" name="attachments">
                         <group>
                             <group>
                                 <field name="data_tracking_readwrite" readonly="0" string="Número de guía"/>
