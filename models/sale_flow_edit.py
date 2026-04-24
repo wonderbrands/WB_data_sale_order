@@ -81,6 +81,30 @@ class SOInternalTag(models.Model):
     dock_id = fields.Many2one("dock.storage", string="DOCK Actual", tracking=True)
     dispatched = fields.Boolean(string="Entregado a paquetería", default=False)
    
+    @api.depends('so_id', 'sequence_number')
+    def _compute_display_name_custom(self):
+        for record in self:
+            if record.so_id and record.sequence_number:
+                record.display_name_custom = f"{record.so_id.name}/{record.sequence_number}"
+            else:
+                record.display_name_custom = "Nueva Guía"
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        #Diccionario para llevar el conteo en memoria por cada Orden de Venta
+        so_counters = {}
+        for vals in vals_list:
+            so_id = vals.get('so_id')
+            if so_id:
+                if so_id not in so_counters:
+                    existing_count = self.search_count([('so_id', '=', so_id)])
+                    so_counters[so_id] = existing_count
+                
+                so_counters[so_id] += 1
+                vals['sequence_number'] = so_counters[so_id]
+                
+        return super(SOInternalTag, self).create(vals_list)
+
 
 class SaleOrderInherit(models.Model):
     _inherit = 'sale.order'
