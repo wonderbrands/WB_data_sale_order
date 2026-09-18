@@ -80,6 +80,11 @@ class SOInternalTag(models.Model):
     on_dock = fields.Boolean(string="Está en DOCK", default=False, tracking=True)
     dock_id = fields.Many2one("dock.storage", string="DOCK Actual", tracking=True)
     dispatched = fields.Boolean(string="Entregado a paquetería", default=False)
+    dispatch_status = fields.Selection([
+        ('pending', 'Pendiente'),
+        ('success', 'Exitoso'),
+        ('failed', 'Fallido')
+    ], string="Estado de Despacho", default='pending')
    
     @api.depends('so_id', 'sequence_number')
     def _compute_display_name_custom(self):

@@ -11,3 +11,5 @@ node_modules/
 *.iml
 *.ipynb
 .ipynb_checkpoints/
+
+.DS_Store

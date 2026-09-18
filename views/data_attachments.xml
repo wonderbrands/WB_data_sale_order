@@ -63,6 +63,7 @@
                                 <field name="on_bin"/>
                                 <field name="on_dock" />
                                 <field name="dispatched" />
+                                <field name="dispatch_status" widget="badge" decoration-success="dispatch_status == 'success'" decoration-danger="dispatch_status == 'failed'" decoration-warning="dispatch_status == 'pending'"/>
                             </list>
                         </field>
                     </page>
